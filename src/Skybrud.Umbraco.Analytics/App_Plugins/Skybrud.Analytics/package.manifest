@@ -1,0 +1,21 @@
+﻿{
+  "contentApps": [
+    {
+      "name": "Analytics",
+      "alias": "skybrud-analytics",
+      "weight": -99,
+      "icon": "icon-chart-curve",
+      "view": "~/App_Plugins/Skybrud.Analytics/Views/ContentApp.html"
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Plugins/Chart.js",
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Directives/Chart.js",
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Directives/Pie.js",
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/ContentApp.js",
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/History.js"
+  ],
+  "css": [
+    "~/App_Plugins/Skybrud.Analytics/Styles/Default.css"
+  ]
+}

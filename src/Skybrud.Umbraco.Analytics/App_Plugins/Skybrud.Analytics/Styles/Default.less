@@ -1,0 +1,58 @@
+﻿.sky-analytics {
+
+    a.active {
+    }
+
+    .sky-analytics-periods {
+        a {
+            font-size: 12px;
+            &.active {
+                font-weight: bold;
+            }
+        }
+        a + a {
+            margin-left: 5px;
+        }
+    }
+
+    .sky-chart {
+        position: relative;
+
+        .sky-graph {
+            display: flex;
+
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+
+            ul {
+                list-style-type: none;
+
+                li {
+                    border-top: 0;
+                    line-height: 26px;
+
+                    span {
+                        display: inline-block;
+                        border-radius: 50%;
+                        width: 10px;
+                        height: 10px;
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+
+
+
+        &.loading {
+            .sky-graph {
+                opacity: 0.5;
+            }
+        }
+    }
+}

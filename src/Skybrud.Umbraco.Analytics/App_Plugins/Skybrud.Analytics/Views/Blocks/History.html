@@ -1,0 +1,13 @@
+﻿<div class="sky-analytics-history" ng-controller="Skybrud.Analytics.History as vm">
+    <div class="umb-box">
+        <div class="umb-box-header">
+            <div class="umb-box-header-title">{{vm.block.title}}</div>
+            <div class="sky-analytics-periods">
+                <a ng-repeat="period in vm.block.periods" href="#" prevent-default ng-click="vm.load(period.alias)" ng-class="{'active': vm.period == period.alias}">{{period.name}}</a>
+            </div>
+        </div>
+        <div class="umb-box-content">
+            <dashboard-chart items="vm.data.history.items" />
+        </div>
+    </div>
+</div>
