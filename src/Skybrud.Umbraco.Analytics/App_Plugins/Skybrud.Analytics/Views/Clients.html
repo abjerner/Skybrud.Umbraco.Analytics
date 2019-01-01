@@ -1,0 +1,35 @@
+﻿<div class="skybrud-analytics skybrud-analytics-clients">
+    <div class="umb-box">
+        <div class="umb-box-header">
+            <div class="umb-box-header-title">
+                Google OAuth Clients
+            </div>
+            <a href="#" prevent-default ng-click="add()" class="btn btn-success btn-xs">Add client</a>
+        </div>
+        <div class="umb-box-content" style="position: relative; min-height: 75px;">
+            <umb-empty-state position="center" ng-show="clients.length == 0">There are currently no OAuth clients.</umb-empty-state>
+            <div ng-show="clients.length > 0">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Client ID</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="client in clients">
+                            <td>{{client.name}}</td>
+                            <td><code>{{client.clientId}}</code></td>
+                            <td style="text-align: right; width: 1px; white-space: nowrap;">
+                                <a href="#" prevent-default ng-click="edit(client)">Edit</a>
+                                <a href="#" prevent-default ng-click="delete(client)">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <umb-overlay ng-if="overlay.show" model="overlay" position="right" view="overlay.view"></umb-overlay>
+</div>

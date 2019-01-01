@@ -1,0 +1,52 @@
+﻿<div ng-controller="hejsa" style="width: 950px;">
+
+    <div ng-show="mode == 'select'">
+        <div class="umb-box">
+            <div class="umb-box-header">
+                <div class="umb-box-header-title">
+                    Select OAuth client
+                </div>
+            </div>
+            <div class="umb-box-content">
+                <p ng-repeat="client in clients">
+                    <a href="#" prevent-default ng-click="selectClient(client)">{{client.name}}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="mode == 'authenticate'">
+        <h4>Authentication</h4>
+        <p>You have authenticated with the following user. Do you wish to continue?</p>
+        <pre>{{user | json}}</pre>
+    </div>
+
+    <div ng-show="mode == 'authenticated'">
+        <div class="umb-box">
+            <div class="umb-box-header">
+                <div class="umb-box-header-title">Authentication</div>
+            </div>
+            <div class="umb-box-content">
+                <p>You have authenticated with the following user. Do you wish to continue?</p>
+                <div class="umb-box">
+                    <div class="umb-box-content">
+                        <div class="history-item ng-scope">
+                            <div class="history-item__break">
+                                <div class="history-item__avatar">
+                                    <div color="secondary" name="{{model.user.name}}">
+                                        <img class="umb-avatar umb-avatar--s" ng-src="{{model.user.avatar}}"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>{{model.user.name}}</div>
+                                    <div class="history-item__date">{{model.user.email}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

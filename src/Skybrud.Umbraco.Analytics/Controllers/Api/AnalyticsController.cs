@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Linq;
 using Skybrud.Social.Google.Analytics.Endpoints;
 using Skybrud.Social.Google.Analytics.Models.Common;
 using Skybrud.Social.Google.Analytics.Models.Data;
 using Skybrud.Social.Google.Analytics.Models.Dimensions;
 using Skybrud.Social.Google.Analytics.Models.Metrics;
 using Skybrud.Social.Google.Analytics.Options.Data;
+using Skybrud.Social.Google.Analytics.Options.Data.Dimensions;
 using Skybrud.Social.Google.Analytics.Responses.Data;
 using Skybrud.Social.Google.Common;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models;
 using Skybrud.WebApi.Json;
+using Skybrud.WebApi.Json.Meta;
 using Umbraco.Core.Configuration;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web.Mvc;
@@ -21,10 +21,13 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
 
     [PluginController("Skybrud")]
     [JsonOnlyConfiguration]
-    public class AnalyticsController : UmbracoAuthorizedApiController {
-
-        [HttpGet]
+    public partial class AnalyticsController : UmbracoAuthorizedApiController {
+        
+        [System.Web.Mvc.HttpGet]
         public object GetBlocks(int pageId) {
+
+            IPublishedContent content = Umbraco.Content(pageId);
+            if (content == null) return Request.CreateResponse(JsonMetaResponse.GetError("Page not found or not published."));
 
             return new {
                 blocks = new [] {
@@ -44,17 +47,16 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         }
 
         
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public object GetHistory(int pageId, string period = "yesterday") {
             return GetData(pageId, period);
         }
 
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public object GetData(int pageId, string period = "yesterday") {
 
             IPublishedContent content = Umbraco.Content(pageId);
-
-            if (content == null) throw new Exception("Page not found or not published.");
+            if (content == null) return Request.CreateResponse(JsonMetaResponse.GetError("Page not found or not published."));
 
             var config = UmbracoConfig.For.SkybrudAnalytics();
 
@@ -89,6 +91,17 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
                 Dimensions = AnalyticsDimensions.Hour
             };
 
+            if (content != null && content.Level > 1) {
+
+                // Google Analytics sees the same URL with and without a trailing slash as two different pages, so we should tell the query to check both
+                string pageUrlTrimmed = content.Url.TrimEnd('/');
+                string pageUrlSlashed = pageUrlTrimmed + '/';
+
+                options.Filters.Add(new AnalyticsDimensionFilter(AnalyticsDimensions.PagePath, AnalyticsDimensionOperator.ExactMatch, pageUrlTrimmed));
+                options.Filters.Add(new AnalyticsDimensionFilter(AnalyticsDimensions.PagePath, AnalyticsDimensionOperator.ExactMatch, pageUrlSlashed));
+
+            }
+            
             if (period.Days <= 1) {
                 options.Dimensions = AnalyticsDimensions.Hour;
             } else if (period.Days <= 31) {

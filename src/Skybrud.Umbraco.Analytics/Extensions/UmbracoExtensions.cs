@@ -1,4 +1,5 @@
-﻿using System.Web.Configuration;
+﻿using System.Web;
+using Skybrud.Umbraco.Analytics.Models.Config;
 using Umbraco.Core.Configuration;
 
 namespace Skybrud.Umbraco.Analytics.Extensions {
@@ -6,21 +7,18 @@ namespace Skybrud.Umbraco.Analytics.Extensions {
     public static class UmbracoExtensions {
 
         public static AnalyticsConfig SkybrudAnalytics(this UmbracoConfig config) {
-            return new AnalyticsConfig();
+
+            if (HttpContext.Current == null) return new AnalyticsConfig();
+
+            AnalyticsConfig analytics = HttpContext.Current.Items["Skybrud.AnalyticsConfig"] as AnalyticsConfig;
+
+            if (analytics == null) {
+                HttpContext.Current.Items["Skybrud.AnalyticsConfig"] = analytics = new AnalyticsConfig();
+            }
+
+            return analytics;
+
         }
 
     }
-
-    public class AnalyticsConfig {
-
-        public string GoogleClientId => WebConfigurationManager.AppSettings["SkybrudAnalytics.GoogleClientId"];
-
-        public string GoogleClientSecret => WebConfigurationManager.AppSettings["SkybrudAnalytics.GoogleClientSecret"];
-
-        public string GoogleRefreshToken => WebConfigurationManager.AppSettings["SkybrudAnalytics.GoogleRefreshToken"];
-
-        public string AnalyticsProfileId => WebConfigurationManager.AppSettings["SkybrudAnalytics.AnalyticsProfileId"];
-
-    }
-
 }

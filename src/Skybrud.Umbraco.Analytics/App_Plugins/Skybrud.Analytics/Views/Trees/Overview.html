@@ -1,0 +1,121 @@
+﻿<div class="umb-pane" ng-controller="Skybrud.Analytics.Overview">
+    <umb-editor-view>
+        
+        
+        
+        <!--<div data-element="editor-header" class="umb-editor-header">
+
+            <div class="flex items-center" style="height: 100%;">
+                <div class="flex items-center" style="flex: 1;">
+                    <div id="nameField" style="flex: 1 1 auto;">
+                        <div class="umb-panel-header-name">Skybrud.Analytics</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="btn-group">
+                        <a href="#" prevent-default class="btn btn-default">Overview</a>
+                        <a href="#" prevent-default class="btn btn-default">Settings</a>
+                        <a href="#" prevent-default class="btn btn-default btn-active">Permissions</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>-->
+        
+        
+        
+        
+        
+        
+        
+        
+
+        <umb-editor-header name="'Skybrud.Analytics'" name-locked="true" hide-icon="true" hide-alias="true" hide-description="true" navigation="navigation">
+            <div>Hej</div>
+        </umb-editor-header>
+
+        <umb-editor-container>
+            <div class="umb-box">
+                <div class="umb-box-header">
+                    <div class="umb-box-header-title">Credentials</div>
+                    <button prevent-default ng-click="addClient()" class="btn btn-success btn-xs">Add credentials</button>
+                </div>
+                <div class="umb-box-content">
+                    <umb-empty-state ng-show="clients.length == 0">
+                        No credentials
+                        <div style="line-height: 16px; font-size: 14px;">
+                            <small class="faded">
+                                You can find or add credentials for your Google projects via
+                                <a href="https://console.developers.google.com/" target="_blank" rel="noopener noreferrer">Google Developer Console</a>.
+                            </small>
+                        </div>
+                    </umb-empty-state>
+                    <div ng-show="clients.length > 0">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Client ID</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="client in clients">
+                                <td>{{client.name}}</td>
+                                <td><code>{{client.clientId}}</code></td>
+                                <td style="text-align: right; width: 1px; white-space: nowrap;">
+                                    <a href="#" prevent-default ng-click="editClient(client)">Edit</a>
+                                    <a href="#" prevent-default ng-click="deleteClient(client)">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="umb-box" ng-show="clients.length > 0">
+                <div class="umb-box-header">
+                    <div class="umb-box-header-title">
+                        Users
+                    </div>
+                    <button prevent-default ng-click="addUser()" class="btn btn-success btn-xs">Add user</button>
+                </div>
+                <div class="umb-box-content" style="position: relative; min-height: 75px;">
+                    <umb-empty-state ng-show="users.length == 0">
+                        No users
+                        <div style="line-height: 16px; font-size: 14px;">
+                            <small class="faded">
+                                There are currently no users. Click the <strong>Add user</strong> button to add a new Analytics user.
+                            </small>
+                        </div>
+                    </umb-empty-state>
+                    <div ng-show="users.length > 0">
+                        <table class="table list">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="user in users">
+                                <td>
+                                    <code>{{user.userId}}</code>
+                                </td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td style="text-align: right;">
+                                    <a href="#" prevent-default ng-click="deleteUser(user)">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <umb-overlay ng-if="overlay.show" model="overlay" position="right" view="overlay.view"></umb-overlay>
+        </umb-editor-container>
+    </umb-editor-view>
+</div>
