@@ -20,6 +20,7 @@
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/ContentApp.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/History.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/Overview.js",
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/Overlays/OAuth.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/App.js"
   ],
   "css": [
