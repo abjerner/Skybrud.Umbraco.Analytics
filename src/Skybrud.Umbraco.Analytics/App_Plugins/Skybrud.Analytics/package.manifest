@@ -11,6 +11,18 @@
       ]
     }
   ],
+  "propertyEditors": [
+    {
+      "alias": "Skybrud.Umbraco.Analytics.Profile",
+      "name": "Skybrud.Analytics - Profile Selector",
+      "icon": "icon-user",
+      "group": "Skybrud.Analytics",
+      "editor": {
+        "valueType": "JSON",
+        "view": "~/App_Plugins/Skybrud.Analytics/Views/PropertyEditors/Profile.html"
+      }
+    }
+  ],
   "javascript": [
     "~/App_Plugins/Skybrud.Analytics/Scripts/Plugins/Chart.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/Directives/Chart.js",
