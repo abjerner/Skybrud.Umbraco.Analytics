@@ -21,9 +21,11 @@
     };
 
     window[alias] = function (user) {
-        $scope.model.user = user;
-        $scope.mode = "authenticated";
-        $scope.model.disableSubmitButton = user === null;
+        $scope.$apply(function () {
+            $scope.model.user = user;
+            $scope.mode = "authenticated";
+            $scope.model.disableSubmitButton = user === null;
+        });
     }
 
 });

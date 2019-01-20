@@ -33,6 +33,14 @@ angular.module("umbraco.services").factory("analyticsService", function($http) {
 
     return {
 
+        getStatus: function () {
+            return $http.get("/umbraco/backoffice/Skybrud/Analytics/GetStatus");
+        },
+
+        getAccounts: function (userId) {
+            return $http.get("/umbraco/backoffice/Skybrud/Analytics/GetAccounts?userId=" + userId);
+        },
+
         getClients: function() {
             return $http.get("/umbraco/backoffice/Skybrud/Analytics/GetClients");
         },

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
 
-namespace Skybrud.Umbraco.Analytics.Models.Section {
+namespace Skybrud.Umbraco.Analytics.Models.Selection {
 
     public class AnalyticsAccount {
 

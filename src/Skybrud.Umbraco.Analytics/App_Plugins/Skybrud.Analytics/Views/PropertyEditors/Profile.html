@@ -1,10 +1,30 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿<div class="sky-analytics sky-analytics-profile-selector" ng-controller="Skybrud.Analytics.ProfileSelector">
 
-</body>
-</html>
+    
+    <div ng-show="model.value">
+        <dl>
+            <dt>ID</dt>
+            <dd>{{model.value.profile.id}}</dd>
+            <dt>Name</dt>
+            <dd>{{model.value.profile.name}}</dd>
+            <dt>URL</dt>
+            <dd>
+                <a href="{{model.value.profile.websiteUrl}}" target="_blank" rel="noreferrer noopener">
+                    {{model.value.profile.websiteUrl}}
+                    <i ng-class="value.icon" class="icon-out"></i>
+                </a>
+            </dd>
+            <dt>Account</dt>
+            <dd>{{model.value.account.name}}</dd>
+            <dt>Web Property</dt>
+            <dd>{{model.value.webProperty.name}}</dd>
+        </dl>
+        <button class="btn btn-success" prevent-default ng-click="reset()">Reset</button>
+        <button class="btn btn-success" prevent-default ng-click="select()">Select</button>
+    </div>
+    
+    <div ng-hide="model.value">
+        <button class="btn btn-success" prevent-default ng-click="select()">Select</button>
+    </div>
+
+</div>

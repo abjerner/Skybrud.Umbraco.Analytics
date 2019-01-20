@@ -55,3 +55,6 @@
 .sky-analytics-history .umb-box-content .umb-empty-state {
   max-width: initial;
 }
+.sky-analytics-profile-selector dl {
+  margin-top: 0;
+}

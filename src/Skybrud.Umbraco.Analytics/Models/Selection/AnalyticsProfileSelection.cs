@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
 
-namespace Skybrud.Umbraco.Analytics.Models.Section {
+namespace Skybrud.Umbraco.Analytics.Models.Selection {
 
     public class AnalyticsProfileSelection {
 
@@ -31,7 +31,7 @@ namespace Skybrud.Umbraco.Analytics.Models.Section {
         /// <summary>
         /// Gets whether the selection has a value.
         /// </summary>
-        public bool HasValue => Profile != null;
+        public bool IsValid => Profile != null;
 
         #endregion
 

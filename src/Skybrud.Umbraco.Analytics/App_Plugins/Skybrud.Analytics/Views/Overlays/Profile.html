@@ -1,0 +1,83 @@
+﻿<div ng-controller="Skybrud.Analytics.Overlays.ProfileSelector">
+    
+    
+    
+    
+    <umb-editor-view>
+
+        <umb-editor-header name="model.title"
+                           hide-icon="true"
+                           hide-description="true"
+                           hide-alias="true"
+                           name-locked="true"
+        >
+        </umb-editor-header>
+        
+        
+        <umb-editor-container>
+            <div>
+                <div ng-repeat="user in users">
+                    <h3>User: {{user.name}} - {{user.email}}</h3>
+                    <div ng-repeat="account in user.accounts">
+                        <h4>
+                            <span>Account:</span>
+                            <strong>{{account.name}}</strong>
+                        </h4>
+                        <table class="table list">
+                            <thead>
+                            <tr>
+                                <th>Web Property</th>
+                                <th>Profile</th>
+                                <th>URL</th>
+                            </tr>
+                            </thead>
+                            <tbody ng-repeat="webProperty in account.webProperties">
+                            <tr ng-repeat="profile in webProperty.profiles" ng-click="model.submit(user, account, webProperty, profile)">
+                                <td>
+                                    {{webProperty.name}}<br />
+                                    <span>ID: {{webProperty.id}}</span>
+                                </td>
+                                <td>
+                                    <strong>{{profile.name}}</strong><br />
+                                    <span>ID: {{profile.id}}</span>
+                                </td>
+                                <td>
+                                    {{profile.websiteUrl}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </umb-editor-container>
+        
+        <umb-editor-footer>
+
+            <umb-editor-footer-content-right>
+
+                <umb-button ng-if="model.infiniteMode"
+                            action="model.close()"
+                            button-style="link"
+                            label="Close"
+                            type="button">
+                </umb-button>
+
+
+                <!--<umb-button type="link"
+                            action="model.submit()"
+                            label="Select"
+                            button-style="success">
+                </umb-button>-->
+
+            </umb-editor-footer-content-right>
+
+
+        </umb-editor-footer>
+        
+        
+    </umb-editor-view>
+    
+    
+    
+</div>

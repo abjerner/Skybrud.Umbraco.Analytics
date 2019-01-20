@@ -11,7 +11,7 @@
                 <strong>No data</strong><br />
                 Oh noes. Google Analytics have no data for the selected period.
             </umb-empty-state>
-            <dashboard-chart ng-show="vm.data.history.hasData" items="vm.data.history.items"/>
+            <dashboard-chart ng-if="vm.data.history.hasData" items="vm.data.history.items"/>
         </div>
     </div>
 </div>

@@ -15,8 +15,19 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
 
         private readonly string _path = IOHelper.MapPath("~/Config/Skybrud.Analytics.config");
 
+        #region Properties
+
+        public AnalyticsConfigAppSettings AppSettings { get; }
+
+        public bool HasAppSettings => AppSettings?.IsValid ?? false;
+
+        #endregion
+
+        #region Constructors
+
         public AnalyticsConfig() {
 
+            AppSettings = new AnalyticsConfigAppSettings();
 
             if (System.IO.File.Exists(_path) == false) {
                 Save();
@@ -25,6 +36,10 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
             }
 
         }
+
+        #endregion
+
+        #region Member methods
 
         internal void Load() {
 
@@ -168,6 +183,8 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
             Save();
 
         }
+
+        #endregion
 
         #endregion
 

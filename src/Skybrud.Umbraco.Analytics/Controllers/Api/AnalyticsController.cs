@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
 using Skybrud.Social.Google.Analytics.Endpoints;
 using Skybrud.Social.Google.Analytics.Models.Common;
 using Skybrud.Social.Google.Analytics.Models.Data;
@@ -6,14 +8,18 @@ using Skybrud.Social.Google.Analytics.Models.Dimensions;
 using Skybrud.Social.Google.Analytics.Models.Metrics;
 using Skybrud.Social.Google.Analytics.Options.Data;
 using Skybrud.Social.Google.Analytics.Options.Data.Dimensions;
+using Skybrud.Social.Google.Analytics.Options.Management;
 using Skybrud.Social.Google.Analytics.Responses.Data;
 using Skybrud.Social.Google.Common;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models;
+using Skybrud.Umbraco.Analytics.Models.Config;
+using Skybrud.Umbraco.Analytics.Models.Selection;
 using Skybrud.WebApi.Json;
 using Skybrud.WebApi.Json.Meta;
 using Umbraco.Core.Configuration;
 using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Web;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 
@@ -22,7 +28,55 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
     [PluginController("Skybrud")]
     [JsonOnlyConfiguration]
     public partial class AnalyticsController : UmbracoAuthorizedApiController {
-        
+
+        [System.Web.Mvc.HttpGet]
+        public object GetStatus() {
+
+            AnalyticsConfig cfg = UmbracoConfig.For.SkybrudAnalytics();
+
+            return new {
+                clients = new {
+                    count = cfg.GetClients().Length,
+                    add = true
+                },
+                users = new {
+                    count = cfg.GetUsers().Length,
+                    add = true,
+                    authenticate = true
+                }
+            };
+
+        }
+
+        [System.Web.Mvc.HttpGet]
+        public object GetAccounts(string userId) {
+
+            AnalyticsConfig cfg = UmbracoConfig.For.SkybrudAnalytics();
+
+            AnalyticsConfigUser user = cfg.GetUserById(userId);
+
+            if (user == null) return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.NotFound, "User not found."));
+
+            GoogleService google = GoogleService.CreateFromRefreshToken(
+                user.Client.ClientId,
+                user.Client.ClientSecret,
+                user.RefreshToken
+            );
+
+            var response1 = google.Analytics.Management.GetAccounts(new AnalyticsGetAccountsOptions(1000));
+            var response2 = google.Analytics.Management.GetWebProperties(new AnalyticsGetWebPropertiesOptions(1000));
+            var response3 = google.Analytics.Management.GetProfiles(new AnalyticsGetProfilesOptions(1000));
+
+            var accounts = response1.Body.Items;
+            var webProperties = response2.Body.Items;
+            var profiles = response3.Body.Items;
+
+            var body = new Models.Api.Selector.UserModel(user, accounts, webProperties, profiles);
+
+            return body;
+
+        }
+
         [System.Web.Mvc.HttpGet]
         public object GetBlocks(int pageId) {
 
@@ -58,13 +112,53 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
             IPublishedContent content = Umbraco.Content(pageId);
             if (content == null) return Request.CreateResponse(JsonMetaResponse.GetError("Page not found or not published."));
 
-            var config = UmbracoConfig.For.SkybrudAnalytics();
+            IPublishedContent site = GetSiteNode(content);
+            if (site == null) return Request.CreateResponse(JsonMetaResponse.GetError("Unable to determine site node."));
 
-            GoogleService google = GoogleService.CreateFromRefreshToken(
-                config.GoogleClientId,
-                config.GoogleClientSecret,
-                config.GoogleRefreshToken
-            );
+            AnalyticsProfileSelection selection = site.Value("analyticsProfile") as AnalyticsProfileSelection;
+
+            // Get a reference to the configuration of this package
+            AnalyticsConfig config = UmbracoConfig.For.SkybrudAnalytics();
+
+            string profileId = null;
+            GoogleService service = null;
+
+            if (selection != null && selection.IsValid) {
+
+                profileId = selection.Profile.Id;
+
+                AnalyticsConfigUser user = config.GetUserById(selection.User.Id);
+
+                if (user != null) {
+                    service = GoogleService.CreateFromRefreshToken(
+                        user.Client.ClientId,
+                        user.Client.ClientSecret,
+                        user.RefreshToken
+                    );
+                }
+
+            }
+
+            // Fallback to app settings (if specified)
+            if (service == null && config.HasAppSettings) {
+
+                profileId = config.AppSettings.AnalyticsProfileId;
+
+                service = GoogleService.CreateFromRefreshToken(
+                    config.AppSettings.GoogleClientId,
+                    config.AppSettings.GoogleClientSecret,
+                    config.AppSettings.GoogleRefreshToken
+                );
+
+            }
+
+            if (String.IsNullOrWhiteSpace(profileId) || service == null) {
+                return Request.CreateResponse(JsonMetaResponse.GetError("The Analytics package is not configured."));
+            }
+
+
+
+            AnalyticsDataMode mode = content.Id == site.Id ? AnalyticsDataMode.Site : AnalyticsDataMode.Page;
 
             Period p = Period.Parse(period);
 
@@ -75,23 +169,48 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
                     name = content.Name,
                     url = content.Url
                 },
-                history = GetHistory(google.Analytics, content, p)
+                history = GetHistory(service.Analytics, profileId, content, mode, p)
             };
 
         }
 
-        private object GetHistory(AnalyticsEndpoint analytics, IPublishedContent content, Period period) {
+        private IPublishedContent GetSiteNode(IPublishedContent content) {
+
+            IPublishedContent scope = content;
+
+            while (scope != null) {
+
+                // The "analyticsProfile" should only be present at the site node
+                if (scope.HasValue("analyticsProfile")) return scope;
+
+                // If checks fail, the site node is the top most node
+                if (scope.Level == 1) return scope;
+
+                scope = scope.Parent;
+
+            }
+
+            return null;
+
+        }
+
+        public enum AnalyticsDataMode {
+            Site,
+            Page
+        }
+
+        private object GetHistory(AnalyticsEndpoint analytics, string profileId, IPublishedContent content, AnalyticsDataMode mode, Period period) {
 
             // Declare the options for the request
             AnalyticsGetDataOptions options = new AnalyticsGetDataOptions {
-                ProfileId = UmbracoConfig.For.SkybrudAnalytics().AnalyticsProfileId,
+                ProfileId = profileId,
                 StartDate = period.StartDate,
                 EndDate = period.EndDate,
                 Metrics = AnalyticsMetrics.Sessions + AnalyticsMetrics.Pageviews,
                 Dimensions = AnalyticsDimensions.Hour
             };
 
-            if (content != null && content.Level > 1) {
+            if (mode == AnalyticsDataMode.Page) {
 
                 // Google Analytics sees the same URL with and without a trailing slash as two different pages, so we should tell the query to check both
                 string pageUrlTrimmed = content.Url.TrimEnd('/');

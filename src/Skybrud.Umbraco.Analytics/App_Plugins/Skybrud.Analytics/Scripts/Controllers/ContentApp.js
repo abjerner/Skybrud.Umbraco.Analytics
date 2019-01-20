@@ -11,8 +11,6 @@
 
         var state = editorState.current.variants[0].state;
 
-        console.log(state);
-
         switch (state) {
 
             case "Published":
@@ -34,15 +32,8 @@
         alert("MULTIPLE VARIANTS. FANCY!!!");
     }
 
-    console.log(editorState.current);
-
     vm.CurrentNodeId = editorState.current.id;
     vm.CurrentNodeAlias = editorState.current.contentTypeAlias;
-
-    var user = userService.getCurrentUser().then(function (user) {
-        //console.log(user);
-        vm.UserName = user.name;
-    });
 
     vm.blocks = null;
 
