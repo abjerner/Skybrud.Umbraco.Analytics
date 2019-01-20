@@ -1,9 +1,15 @@
 # Skybrud.Umbraco.Analytics
 
+The content app shows data from Google Analytics - at either the site level or the page level depending on the content item being viewed.
+
+Besides the content app, the package also lets you setup everything needed to authenticate with Google and get statistics from Google Analytics - either configured via app settings in Web.config or via a new tree that is added to the Settings section.
+
+The package lets you add multiple Google users, which then lets you configure 100s of individual sites in the same Umbraco installation (if you actually have that many sites - some of our clients do).
+
 ## Installation
 
 1. Install Umbraco 8
-2. Install via NuGet
+2. [Install the package via NuGet](https://www.nuget.org/packages/Skybrud.Umbraco.Analytics/)
 
 ## Screenshots
 
