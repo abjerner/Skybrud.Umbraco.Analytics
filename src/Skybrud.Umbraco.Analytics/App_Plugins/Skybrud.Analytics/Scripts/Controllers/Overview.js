@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Skybrud.Analytics.Overview", function ($scope, editorState, userService, notificationsService, $http, analyticsService) {
+﻿angular.module("umbraco").controller("Skybrud.Analytics.Overview", function ($scope, editorState, userService, notificationsService, $http, analyticsService, overlayService) {
 
     $scope.clients = [];
     $scope.users = [];
@@ -29,10 +29,22 @@
     }
 
     $scope.deleteClient = function (client) {
-        analyticsService.deleteClient(client).then(function () {
-            notificationsService.success("Skybrud.Analytics", "The OAuth client was successfully delete.");
-            $scope.updateClients();
-            $scope.updateUsers();
+        overlayService.open({
+            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/DeleteClient.html",
+            client: client,
+            submitButtonLabel: "Confirm",
+            closeButtonLabel: "Cancel",
+            submit: function () {
+                analyticsService.deleteClient(client).then(function () {
+                    notificationsService.success("Skybrud.Analytics", "The OAuth client was successfully delete.");
+                    $scope.updateClients();
+                    $scope.updateUsers();
+                });
+                overlayService.close();
+            },
+            close: function () {
+                overlayService.close();
+            }
         });
     };
     
@@ -143,9 +155,19 @@
     };
 
     $scope.deleteUser = function (user) {
-        analyticsService.deleteUser(user).then(function () {
-            notificationsService.success("Skybrud.Analytics", "The user was successfully deleted.");
-            $scope.updateUsers();
+        overlayService.open({
+            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/DeleteUser.html",
+            user: user,
+            submit: function () {
+                analyticsService.deleteUser(user).then(function () {
+                    notificationsService.success("Skybrud.Analytics", "The user was successfully deleted.");
+                    $scope.updateUsers();
+                });
+                overlayService.close();
+            },
+            close: function () {
+                overlayService.close();
+            }
         });
     };
 
