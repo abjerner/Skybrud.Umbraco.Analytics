@@ -7,11 +7,15 @@
             </div>
         </div>
         <div class="umb-box-content">
-            <umb-empty-state position="center" ng-show="!vm.data.history.hasData">
+            <umb-empty-state position="center" ng-show="vm.data && !vm.data.history.hasData">
                 <strong>No data</strong><br />
                 Oh noes. Google Analytics have no data for the selected period.
             </umb-empty-state>
-            <dashboard-chart ng-if="vm.data.history.hasData" items="vm.data.history.items"/>
+            <umb-empty-state position="center" ng-show="vm.error">
+                <strong>{{vm.error.title || 'Error'}}</strong><br />
+                {{vm.error.message}}
+            </umb-empty-state>
+            <dashboard-chart ng-if="vm.data.history.hasData" items="vm.data.history.items" />
         </div>
     </div>
 </div>
