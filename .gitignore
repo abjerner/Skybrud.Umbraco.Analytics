@@ -1,3 +1,4 @@
 src/.vs/
 src/Skybrud.Umbraco.Analytics/bin/
 src/Skybrud.Umbraco.Analytics/obj/
+node_modules/

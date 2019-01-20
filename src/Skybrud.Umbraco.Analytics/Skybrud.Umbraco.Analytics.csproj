@@ -20,13 +20,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="App_Plugins\Skybrud.Analytics\Styles\Default.less" />
-    <Content Include="App_Plugins\Skybrud.Analytics\Styles\Default.css">
+    <None Include="App_Plugins\Skybrud.Analytics\Styles\Default.less" />
+    <None Include="App_Plugins\Skybrud.Analytics\Styles\Default.css">
       <DependentUpon>Default.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="App_Plugins\Skybrud.Analytics\Styles\Default.min.css">
       <DependentUpon>Default.css</DependentUpon>
     </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="App_Plugins\Skybrud.Analytics\**\*.aspx" />
+    <Content Include="App_Plugins\Skybrud.Analytics\**\*.js" />
+    <Content Include="App_Plugins\Skybrud.Analytics\**\*.html" />
+    <Content Include="App_Plugins\Skybrud.Analytics\package.manifest" />
   </ItemGroup>
 
   <ItemGroup>
