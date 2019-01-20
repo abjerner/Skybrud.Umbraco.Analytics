@@ -42,8 +42,8 @@ module.exports = function(grunt) {
 						expand: true,
 						cwd: projectRoot + 'bin/Release/',
 						src: [
-							'**/*.dll',
-							'**/*.xml'
+							'**/Skybrud.*.dll',
+							'**/Skybrud.*.xml'
 						],
 						dest: 'releases/temp/'
 					}
