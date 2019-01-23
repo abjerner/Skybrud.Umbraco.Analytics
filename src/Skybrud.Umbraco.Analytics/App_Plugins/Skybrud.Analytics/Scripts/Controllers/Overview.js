@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Skybrud.Analytics.Overview", function ($scope, editorState, userService, notificationsService, $http, analyticsService, overlayService) {
+﻿angular.module("umbraco").controller("Skybrud.Analytics.Overview", function ($scope, editorState, userService, notificationsService, $http, analyticsService, overlayService, editorService) {
 
     $scope.clients = [];
     $scope.users = [];
@@ -49,11 +49,12 @@
     };
     
     $scope.addClient = function () {
-        $scope.overlay = {
+        editorService.open({
             view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/Properties.html",
             title: "Add OAuth client",
+            size: "small",
             submitButtonLabel: "Add",
-            show: true,
+            closeButtonLabel: "Close",
             properties: [
                 {
                     alias: "name",
@@ -86,16 +87,18 @@
                 analyticsService.addClient(client).then(function () {
                     notificationsService.success("Skybrud.Analytics", "The OAuth client was successfully added.");
                     $scope.updateClients();
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
+                    editorService.close();
                 });
+            },
+            close: function () {
+                editorService.close();
             }
-        };
+        });
     };
 
     $scope.editClient = function (client) {
         $scope.overlay = {
-            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/Properties.html",
+            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/PropertiesOld.html",
             title: "Edit OAuth client",
             submitButtonLabel: "Save",
             show: true,

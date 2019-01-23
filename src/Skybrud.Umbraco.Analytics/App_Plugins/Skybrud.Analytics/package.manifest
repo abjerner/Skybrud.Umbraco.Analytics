@@ -34,6 +34,7 @@
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/Overview.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/Overlays/OAuth.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/Overlays/Profile.js",
+    "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/Overlays/Properties.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/Controllers/PropertyEditors/Profile.js",
     "~/App_Plugins/Skybrud.Analytics/Scripts/App.js"
   ],

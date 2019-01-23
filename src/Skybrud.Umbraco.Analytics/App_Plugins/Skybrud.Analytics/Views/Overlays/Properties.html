@@ -1,7 +1,28 @@
-﻿<div>
-    <form ng-submit="model.submit(model)">
-        <umb-property property="property" ng-repeat="property in model.properties">
-            <umb-property-editor model="property"></umb-property-editor>
-        </umb-property>
-    </form>
+﻿<div ng-controller="Skybrud.Analytics.Overlays.Properties">
+    <ng-form name="propertiesForm" novalidate val-form-manager>
+        <umb-editor-view>
+            <umb-editor-header name="model.title" hide-icon="true" hide-description="true" hide-alias="true" name-locked="true"></umb-editor-header>
+            <umb-editor-container>
+                <div>
+                    <div class="umb-box">
+                        <div class="umb-box-content">
+                            <umb-property property="property" ng-repeat="property in model.properties">
+                                <umb-property-editor model="property"></umb-property-editor>
+                            </umb-property>
+                        </div>
+                    </div>
+                </div>
+            </umb-editor-container>
+            <umb-editor-footer>
+                <umb-editor-footer-content-right>
+                    <umb-button ng-if="model.infiniteMode" action="close()" button-style="link" label="{{model.closeButtonLabel || 'Close'}}" type="button"></umb-button>
+                    <umb-button
+                        type="button"
+                        action="submitForm(model)"
+                        label="{{model.submitButtonLabel || Add}}"
+                        button-style="success"></umb-button>
+                </umb-editor-footer-content-right>
+            </umb-editor-footer>
+        </umb-editor-view>
+    </ng-form>
 </div>
