@@ -33,6 +33,7 @@
     <Content Include="App_Plugins\Skybrud.Analytics\**\*.aspx" />
     <Content Include="App_Plugins\Skybrud.Analytics\**\*.js" />
     <Content Include="App_Plugins\Skybrud.Analytics\**\*.html" />
+    <Content Include="App_Plugins\Skybrud.Analytics\**\*.cshtml" />
     <Content Include="App_Plugins\Skybrud.Analytics\package.manifest" />
   </ItemGroup>
 

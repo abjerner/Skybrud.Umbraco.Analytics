@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json;
 using Skybrud.Umbraco.Analytics.Models.Api;
@@ -55,7 +56,7 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
 
             _config = _config ?? new AnalyticsConfigElement();
 
-            JsonUtils.SaveJsonObject(path, JObject.FromObject(_config));
+            JsonUtils.SaveJsonObject(path, JObject.FromObject(_config), Formatting.Indented);
 
         }
 

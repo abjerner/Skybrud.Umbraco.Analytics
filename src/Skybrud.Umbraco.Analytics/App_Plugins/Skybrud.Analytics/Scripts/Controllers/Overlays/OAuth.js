@@ -15,7 +15,7 @@
         //$scope.mode = "authenticate";
         $scope.model.client = client;
 
-        var url = "/App_Plugins/Skybrud.Analytics/Dialogs/GoogleOAuth.aspx?callback=" + alias + "&id=" + client.id;
+        var url = "/umbraco/Skybrud/AnalyticsOAuth/Authenticate?callback=" + alias + "&id=" + client.id;
         window.open(url, "Google OAuth", "scrollbars=no,resizable=yes,menubar=no,width=800,height=700");
 
     };
