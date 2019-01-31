@@ -24,6 +24,7 @@ using Umbraco.Web.WebApi;
 namespace Skybrud.Umbraco.Analytics.Controllers.Api {
 
     [PluginController("Skybrud")]
+    [JsonOnlyConfiguration]
     public partial class AnalyticsController : UmbracoAuthorizedApiController {
 
         [System.Web.Mvc.HttpGet]
