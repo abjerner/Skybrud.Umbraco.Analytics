@@ -12,7 +12,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Trees {
 
     //[Tree(Constants.Applications.Settings, "skybrud.analytics", "Skybrud.Analytics", "icon-folder", "icon-folder", sortOrder: 15)]
     //[Tree("sectionAlias", "treeAlias", "icon-folder", "icon-folder", true, 15, "Skybrud", "Skybrud.Analytics")]
-    [Tree(Constants.Applications.Settings, "skybrud.analytics", IsSingleNodeTree = true, SortOrder = 15, TreeGroup = "Skybrud")]
+    [Tree(Constants.Applications.Settings, "skybrud.analytics", IsSingleNodeTree = true, SortOrder = 15)]
     public class SkybrudAnalyticsTreeController : TreeController {
 
         protected override TreeNode CreateRootNode(FormDataCollection queryStrings) {
