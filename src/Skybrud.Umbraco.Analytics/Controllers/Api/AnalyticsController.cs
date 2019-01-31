@@ -14,10 +14,8 @@ using Skybrud.Social.Google.Common;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models;
 using Skybrud.Umbraco.Analytics.Models.Config;
+using Skybrud.Umbraco.Analytics.Models.Json;
 using Skybrud.Umbraco.Analytics.Models.Selection;
-using Skybrud.WebApi.Json;
-using Skybrud.WebApi.Json.Meta;
-using Umbraco.Core.Configuration;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web;
 using Umbraco.Web.Mvc;
@@ -26,13 +24,12 @@ using Umbraco.Web.WebApi;
 namespace Skybrud.Umbraco.Analytics.Controllers.Api {
 
     [PluginController("Skybrud")]
-    [JsonOnlyConfiguration]
     public partial class AnalyticsController : UmbracoAuthorizedApiController {
 
         [System.Web.Mvc.HttpGet]
         public object GetStatus() {
 
-            AnalyticsConfig cfg = UmbracoConfig.For.SkybrudAnalytics();
+            AnalyticsConfig cfg = AnalyticsConfig.Current;
 
             return new {
                 clients = new {
@@ -51,7 +48,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpGet]
         public object GetAccounts(string userId) {
 
-            AnalyticsConfig cfg = UmbracoConfig.For.SkybrudAnalytics();
+            AnalyticsConfig cfg = AnalyticsConfig.Current;
 
             AnalyticsConfigUser user = cfg.GetUserById(userId);
 
@@ -118,7 +115,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
             AnalyticsProfileSelection selection = site.Value("analyticsProfile") as AnalyticsProfileSelection;
 
             // Get a reference to the configuration of this package
-            AnalyticsConfig config = UmbracoConfig.For.SkybrudAnalytics();
+            AnalyticsConfig config = AnalyticsConfig.Current;
 
             string profileId = null;
             GoogleService service = null;

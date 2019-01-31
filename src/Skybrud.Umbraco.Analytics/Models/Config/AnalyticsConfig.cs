@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,6 +22,25 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
         public AnalyticsConfigAppSettings AppSettings { get; }
 
         public bool HasAppSettings => AppSettings?.IsValid ?? false;
+
+        public static AnalyticsConfig Current {
+
+            get {
+                
+                if (HttpContext.Current == null) return new AnalyticsConfig();
+
+                AnalyticsConfig analytics = HttpContext.Current.Items["Skybrud.AnalyticsConfig"] as AnalyticsConfig;
+
+                if (analytics == null) {
+                    HttpContext.Current.Items["Skybrud.AnalyticsConfig"] = analytics = new AnalyticsConfig();
+                }
+
+                return analytics;
+
+            }
+
+        }
+
 
         #endregion
 

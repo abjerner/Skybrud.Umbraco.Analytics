@@ -1,15 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http.Formatting;
-using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models.Config;
 using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Core.Configuration;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Trees;
 
 namespace Skybrud.Umbraco.Analytics.Controllers.Trees {
 
-    [Tree(Constants.Applications.Settings, "skybrud.analytics", "Skybrud.Analytics", "icon-folder", "icon-folder", sortOrder: 15)]
+    //[Tree(Constants.Applications.Settings, "skybrud.analytics", "Skybrud.Analytics", "icon-folder", "icon-folder", sortOrder: 15)]
+    //[Tree("sectionAlias", "treeAlias", "icon-folder", "icon-folder", true, 15, "Skybrud", "Skybrud.Analytics")]
+    [Tree(Constants.Applications.Settings, "skybrud.analytics", IsSingleNodeTree = true, SortOrder = 15, TreeGroup = "Skybrud")]
     public class SkybrudAnalyticsTreeController : TreeController {
 
         protected override TreeNode CreateRootNode(FormDataCollection queryStrings) {
@@ -27,7 +30,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Trees {
             TreeNodeCollection nodes = new TreeNodeCollection();
 
             if (id == "-1") {
-                TreeNode node = CreateTreeNode("oauth", "-1", queryStrings, "OAuth", "icon-settings", UmbracoConfig.For.SkybrudAnalytics().GetClients().Any());
+                TreeNode node = CreateTreeNode("oauth", "-1", queryStrings, "OAuth", "icon-settings", AnalyticsConfig.Current.GetClients().Any());
                 node.RoutePath = $"settings/{TreeAlias}/oauth";
                 nodes.Add(node);
             }
@@ -35,7 +38,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Trees {
             
             if (id == "oauth") {
 
-                foreach (AnalyticsConfigClient client in UmbracoConfig.For.SkybrudAnalytics().GetClients()) {
+                foreach (AnalyticsConfigClient client in AnalyticsConfig.Current.GetClients()) {
                     TreeNode node = CreateTreeNode(client.Id, "oauth", queryStrings, client.Name, "icon-target", false);
                     node.RoutePath = $"settings/{TreeAlias}/oauth/" + client.Id;
                     nodes.Add(node);

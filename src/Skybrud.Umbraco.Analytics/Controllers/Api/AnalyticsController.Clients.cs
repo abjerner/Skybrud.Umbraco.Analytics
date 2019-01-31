@@ -3,8 +3,8 @@ using System.Net;
 using System.Web.Http;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models.Api;
-using Skybrud.WebApi.Json.Meta;
-using Umbraco.Core.Configuration;
+using Skybrud.Umbraco.Analytics.Models.Config;
+using Skybrud.Umbraco.Analytics.Models.Json;
 
 namespace Skybrud.Umbraco.Analytics.Controllers.Api {
 
@@ -13,7 +13,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpGet]
         public object GetClients() {
             return (
-                from client in UmbracoConfig.For.SkybrudAnalytics().GetClients()
+                from client in AnalyticsConfig.Current.GetClients()
                 select new {
                     id = client.Id,
                     name = client.Name,
@@ -26,7 +26,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpDelete]
         public object DeleteClient(string id) {
 
-            var config = UmbracoConfig.For.SkybrudAnalytics();
+            var config = AnalyticsConfig.Current;
 
             var client = config.GetClientById(id);
             if (client == null) return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.NotFound, "OAuth client not found."));
@@ -40,7 +40,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpPost]
         public object AddClient([FromBody] ClientModel model) {
 
-            var config = UmbracoConfig.For.SkybrudAnalytics();
+            var config = AnalyticsConfig.Current;
 
             return new ClientModel(config.AddClient(model.Name, model.ClientId, model.ClientSecret, Security.CurrentUser));
 
@@ -49,7 +49,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpPost]
         public object SaveClient([FromBody] ClientModel model) {
 
-            var config = UmbracoConfig.For.SkybrudAnalytics();
+            var config = AnalyticsConfig.Current;
 
             var client = config.GetClientById(model.Id);
             if (client == null) return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.NotFound, "OAuth client not found."));

@@ -4,8 +4,7 @@ using System.Web.Http;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models.Api;
 using Skybrud.Umbraco.Analytics.Models.Config;
-using Skybrud.WebApi.Json.Meta;
-using Umbraco.Core.Configuration;
+using Skybrud.Umbraco.Analytics.Models.Json;
 
 namespace Skybrud.Umbraco.Analytics.Controllers.Api {
 
@@ -14,7 +13,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpGet]
         public object GetUsers() {
             return (
-                from user in UmbracoConfig.For.SkybrudAnalytics().GetUsers()
+                from user in AnalyticsConfig.Current.GetUsers()
                 select new UserModel(user)
             );
         }
@@ -22,7 +21,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [HttpPost]
         public object AddUser([FromBody] AddUserModel model) {
 
-            var config = UmbracoConfig.For.SkybrudAnalytics();
+            var config = AnalyticsConfig.Current;
 
             var client = config.GetClientById(model.Client.Id);
 
@@ -33,7 +32,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
         [System.Web.Mvc.HttpDelete]
         public object DeleteUser(string id) {
 
-            var config = UmbracoConfig.For.SkybrudAnalytics();
+            var config = AnalyticsConfig.Current;
 
             AnalyticsConfigUser user = config.GetUserById(id);
             if (user == null) return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.NotFound, "User not found."));

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using Microsoft.Owin.Security;
 using Skybrud.Social.Google.Analytics.Scopes;
 using Skybrud.Social.Google.Common;
@@ -12,9 +10,7 @@ using Skybrud.Social.Google.Common.OAuth;
 using Skybrud.Social.Google.Common.Responses;
 using Skybrud.Social.Google.Common.Responses.Authentication;
 using Skybrud.Social.Google.Common.Scopes;
-using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models.Config;
-using Umbraco.Core.Configuration;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Security;
 
@@ -81,7 +77,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Surface {
             }
 
             // Get the specified OAuth client
-            AnalyticsConfigClient client = UmbracoConfig.For.SkybrudAnalytics().GetClientById(Id);
+            AnalyticsConfigClient client = AnalyticsConfig.Current.GetClientById(Id);
             if (client == null) return Error("Client not found", "An OAuth client matching the specified ID could not be found.");
             
             // Configure the OAuth client based on the options of the prevalue options
