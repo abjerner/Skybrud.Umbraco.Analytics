@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").directive("skybrudAnalyticsUsers", function ($timeout, $http, editorState, notificationsService, analyticsService) {
+﻿angular.module("umbraco").directive("skybrudAnalyticsUsers", function ($timeout, $http, editorState, notificationsService, analyticsService, overlayService) {
     return {
         restrict: "EA",
         scope: {},
@@ -23,11 +23,13 @@
 
             $scope.overlay = null;
             
-            $scope.delete = function(user) {
-                analyticsService.deleteUser(user).then(function () {
-                    notificationsService.success("Skybrud.Analytics", "The user was successfully deleted.");
-                    $scope.updateUsers();
-                });
+            $scope.delete = function (user) {
+
+
+                //analyticsService.deleteUser(user).then(function () {
+                //    notificationsService.success("Skybrud.Analytics", "The user was successfully deleted.");
+                //    $scope.updateUsers();
+                //});
             };
 
             $scope.add = function () {

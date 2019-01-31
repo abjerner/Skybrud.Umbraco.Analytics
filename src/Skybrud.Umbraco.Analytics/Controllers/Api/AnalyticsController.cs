@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using Skybrud.Social.Google.Analytics.Endpoints;
@@ -13,7 +15,9 @@ using Skybrud.Social.Google.Analytics.Responses.Data;
 using Skybrud.Social.Google.Common;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models;
+using Skybrud.Umbraco.Analytics.Models.ChartJs;
 using Skybrud.Umbraco.Analytics.Models.Config;
+using Skybrud.Umbraco.Analytics.Models.Data.History;
 using Skybrud.Umbraco.Analytics.Models.Json;
 using Skybrud.Umbraco.Analytics.Models.Selection;
 using Umbraco.Core.Models.PublishedContent;
@@ -219,6 +223,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
 
             }
             
+            // Determine the dimension based on the length of the period
             if (period.Days <= 1) {
                 options.Dimensions = AnalyticsDimensions.Hour;
             } else if (period.Days <= 31) {
@@ -230,154 +235,47 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
             // Get the data from the Analytics API
             AnalyticsGetDataResponse response = analytics.Data.GetData(options);
 
-            if (response.Body.Rows.Length == 0) {
-                return new {
-                    columns = new object[0],
-                    rows = new object[0]
-                };
+            // Return an empty model if there are no valid rows
+            if (response.Body.Rows.All(x => x.GetInt32(AnalyticsMetrics.Sessions) == 0)) {
+                return new AnalyticsHistory();
             }
 
-            object ddata;
+            // Initialize the data sets
+            ChartJsDataSet pageviews = new ChartJsDataSet("Pageviews", "#F1BFBD");
+            ChartJsDataSet sessions = new ChartJsDataSet("Sessions", "#1D274E");
 
-            object[] columns = new object[response.Body.ColumnHeaders.Length];
-            object[] rows = new object[response.Body.Rows.Length];
+            // Initialize the chart data
+            ChartJsData chart = new ChartJsData {
+                DataSets = new List<ChartJsDataSet> {  pageviews, sessions }
+            };
 
-            for (int i = 0; i < response.Body.ColumnHeaders.Length; i++) {
-                var column = response.Body.ColumnHeaders[i];
-                columns[i] = new {
-                    alias = column.Name.Substring(3),
-                    label = column.Name
-                };
-            }
+            // Populate the labels and data of each data set
+            foreach (AnalyticsDataRow row in response.Body.Rows) {
 
-            for (int i = 0; i < response.Body.Rows.Length; i++) {
-
-                AnalyticsDataRow row = response.Body.Rows[i];
-
-                object[] rowdata = new object[row.Cells.Length];
-
-                for (int j = 0; j < row.Cells.Length; j++) {
-                    rowdata[j] = GetCellData(row.Cells[j]);
+                if (row.TryGetValue(AnalyticsDimensions.Date, out string date)) {
+                    DateTime dt = DateTime.ParseExact(date, "yyyyMMdd", CultureInfo.InvariantCulture);
+                    chart.Labels.Add(dt.ToString("MMM d"));
+                } else if (row.TryGetValue(AnalyticsDimensions.Hour, out string hour)) {
+                    chart.Labels.Add(hour);
+                } else if (row.TryGetValue(AnalyticsDimensions.YearWeek, out string yearWeek)) {
+                    chart.Labels.Add("W" + Int32.Parse(yearWeek.Substring(4)));
+                } else {
+                    chart.Labels.Add(row.Cells[0].Value);
                 }
 
-                rows[i] = rowdata;
+                chart.Rows.Add(row);
+
+                pageviews.Data.Add(row.GetString(AnalyticsMetrics.Pageviews));
+                sessions.Data.Add(row.GetString(AnalyticsMetrics.Sessions));
 
             }
 
-            ddata = new { columns, rows };
-
-            var datasets = new object[] {
-                new {
-                    label = "Pageviews",
-                    fillColor = "#35353d",
-                    strokeColor = "#35353d"
-                },
-                new  {
-                    label = "Sessions",
-                    fillColor = "red",//"rgba(141, 146, 157, 1)",
-                    strokeColor = "red"//"rgba(141, 146, 157, 1)"
-                }
-            };
-
-            object[] items = (
-                from row in response.Body.Rows
-                let first = row.Cells[0]
-                select new {
-                    label = FormatCell(first),
-                    visits = FormatInt32(AnalyticsMetrics.Sessions, row),
-                    pageviews = FormatInt32(AnalyticsMetrics.Pageviews, row)
-                }
-            ).ToArray();
-
-            return new {
-                hasData = response.Body.Rows.Any(x => x.GetInt32(AnalyticsMetrics.Sessions) > 0),
-                data = ddata,
-                datasets = datasets,
-                items = items.ToArray()
-            };
-
-        }
-        
-        private static object GetCellData(AnalyticsDataCell cell) {
-
-            object raw;
-            object value;
-
-            switch (cell.Column.DataType) {
-
-                case AnalyticsDataType.Integer:
-                    raw = cell.GetInt32();
-                    value = cell.GetInt32().ToString("N0");
-                    break;
-
-                case AnalyticsDataType.Float:
-                    raw = cell.GetDouble();
-                    value = cell.GetDouble().ToString("N2");
-                    break;
-
-                default:
-                    raw = cell.GetString();
-                    value = cell.GetString() + " (" + cell.Column.ColumnType + ")";
-                    break;
-
-            }
-
-            return new {
-                raw, value
+            return new AnalyticsHistory {
+                Chart = chart
             };
 
         }
 
-        internal object FormatInt32(IAnalyticsField field, AnalyticsDataRow row) {
-
-            string key = field.Name.Substring(3);
-
-            int value = (row == null ? 0 : row.GetInt32(field));
-
-            return new {
-                alias = key,
-                label = field.ToString(),
-                value = new { raw = value, text = value.ToString() }
-            };
-
-        }
-
-        internal object FormatCell(AnalyticsDataCell cell) {
-
-            string key = cell.Column.Name.Substring(3);
-
-            string text = cell.Value;
-
-            //switch (cell.Column.Name) {
-
-            //    case "ga:date":
-            //        {
-            //            DateTime date = DateTime.ParseExact(text, "yyyyMMdd", null);
-            //            if (Context.Culture.TwoLetterISOLanguageName == "en")
-            //            {
-            //                text = date.Day + GetDaySuffix(date.Day) + " of " + date.ToString("MMM");
-            //            }
-            //            else
-            //            {
-            //                text = DateTime.ParseExact(text, "yyyyMMdd", null).ToString("d. MMM", Context.Culture);
-            //            }
-            //            break;
-            //        }
-
-            //    case "ga:yearWeek":
-            //        text = Context.Translate("analytics_week_x", text.Substring(4));
-            //        break;
-
-            //}
-
-            return new {
-                alias = key,
-                label = cell.Column.Name,
-                value = new { raw = cell.Value, text }
-            };
-
-        }
-
-}
+    }
 
 }

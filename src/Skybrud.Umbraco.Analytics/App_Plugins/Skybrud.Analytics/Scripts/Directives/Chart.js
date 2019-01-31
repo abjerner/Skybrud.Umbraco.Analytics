@@ -17,56 +17,10 @@
                 if (history == null) return;
 
                 var canvas = $('<canvas width="' + (chart.width() - 150) + '" height="200"></canvas>').appendTo(chart);
-
-                var visits = {
-                    label: history.datasets[1].label,
-                    fillColor: "rgba(65, 73, 92, 0.5)",
-                    strokeColor: "rgb(65, 73, 92)",
-                    pointColor: "rgb(65, 73, 92)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgb(65, 73, 92)",
-                    data: []
-                };
-
-                var pageviews = {
-                    label: history.datasets[0].label,
-                    fillColor: "rgba(141, 146, 157, 0.2)",
-                    strokeColor: "rgb(141, 146, 157)",
-                    pointColor: "rgb(141, 146, 157)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgb(141, 146, 157)",
-                    data: []
-                };
-
-                pageviews.strokeColor = 'rgba(141, 146, 157, 1)';
-                pageviews.fillColor = 'rgba(141, 146, 157, 1)';
-
-                visits.strokeColor = 'rgba(65, 73, 92, 1)';
-                visits.fillColor = 'rgba(65, 73, 92, 1)';
-
                 
-                pageviews.strokeColor = "#31B0A2";
-                pageviews.fillColor = "#31B0A2";
-
-                visits.strokeColor = "#413658";
-                visits.fillColor = "#413658";
-
-                var data = {
-                    labels: [],
-                    datasets: [pageviews, visits]
-                };
-
-                $.each(history.items, function (i, row) {
-                    data.labels.push(row.label.value.text);
-                    pageviews.data.push(row.pageviews.value.raw + "");
-                    visits.data.push(row.visits.value.raw + "");
-                });
-
                 var ctx = canvas.get(0).getContext("2d");
 
-                var c = new Chart(ctx).Line(data, {
+                var c = new Chart(ctx).Line(history.chart, {
                     bezierCurve: false,
                     scaleFontSize: 10,
                     scaleFontColor: '#000',
