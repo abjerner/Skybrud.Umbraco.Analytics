@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using Skybrud.Social.Google.Analytics.Endpoints;
-using Skybrud.Social.Google.Analytics.Models.Common;
+using Skybrud.Social.Google;
+using Skybrud.Social.Google.Analytics;
 using Skybrud.Social.Google.Analytics.Models.Data;
 using Skybrud.Social.Google.Analytics.Models.Dimensions;
 using Skybrud.Social.Google.Analytics.Models.Metrics;
@@ -12,7 +12,6 @@ using Skybrud.Social.Google.Analytics.Options.Data;
 using Skybrud.Social.Google.Analytics.Options.Data.Dimensions;
 using Skybrud.Social.Google.Analytics.Options.Management;
 using Skybrud.Social.Google.Analytics.Responses.Data;
-using Skybrud.Social.Google.Common;
 using Skybrud.Umbraco.Analytics.Extensions;
 using Skybrud.Umbraco.Analytics.Models;
 using Skybrud.Umbraco.Analytics.Models.ChartJs;
@@ -65,9 +64,9 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
                 user.RefreshToken
             );
 
-            var response1 = google.Analytics.Management.GetAccounts(new AnalyticsGetAccountsOptions(1000));
-            var response2 = google.Analytics.Management.GetWebProperties(new AnalyticsGetWebPropertiesOptions(1000));
-            var response3 = google.Analytics.Management.GetProfiles(new AnalyticsGetProfilesOptions(1000));
+            var response1 = google.Analytics().Management.GetAccounts(new AnalyticsGetAccountsOptions(1000));
+            var response2 = google.Analytics().Management.GetWebProperties(new AnalyticsGetWebPropertiesOptions(1000));
+            var response3 = google.Analytics().Management.GetProfiles(new AnalyticsGetProfilesOptions(1000));
 
             var accounts = response1.Body.Items;
             var webProperties = response2.Body.Items;
@@ -171,7 +170,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
                     name = content.Name,
                     url = content.Url
                 },
-                history = GetHistory(service.Analytics, profileId, content, mode, p)
+                history = GetHistory(service.Analytics(), profileId, content, mode, p)
             };
 
         }
@@ -201,7 +200,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Api {
             Page
         }
 
-        private object GetHistory(AnalyticsEndpoint analytics, string profileId, IPublishedContent content, AnalyticsDataMode mode, Period period) {
+        private object GetHistory(AnalyticsService analytics, string profileId, IPublishedContent content, AnalyticsDataMode mode, Period period) {
 
             // Declare the options for the request
             AnalyticsGetDataOptions options = new AnalyticsGetDataOptions {

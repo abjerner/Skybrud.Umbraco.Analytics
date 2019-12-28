@@ -2,14 +2,15 @@
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
+using Skybrud.Social.Google;
 using Skybrud.Social.Google.Analytics.Scopes;
-using Skybrud.Social.Google.Common;
-using Skybrud.Social.Google.Common.Enums;
-using Skybrud.Social.Google.Common.Models;
-using Skybrud.Social.Google.Common.OAuth;
-using Skybrud.Social.Google.Common.Responses;
-using Skybrud.Social.Google.Common.Responses.Authentication;
-using Skybrud.Social.Google.Common.Scopes;
+using Skybrud.Social.Google.Models;
+using Skybrud.Social.Google.Models.Authentication;
+using Skybrud.Social.Google.OAuth;
+using Skybrud.Social.Google.Options.Authentication;
+using Skybrud.Social.Google.Responses;
+using Skybrud.Social.Google.Responses.Authentication;
+using Skybrud.Social.Google.Scopes;
 using Skybrud.Umbraco.Analytics.Models.Config;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Security;
@@ -107,7 +108,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Surface {
                 };
 
                 // Construct the authorization URL
-                string url = oauth.GetAuthorizationUrl(State, scope, GoogleAccessType.Offline, GoogleApprovalPrompt.Force);
+                string url = oauth.GetAuthorizationUrl(State, scope, GoogleAccessType.Offline, GooglePromptOption.Consent);
 
                 // Redirect the user
                 return Redirect(url);
