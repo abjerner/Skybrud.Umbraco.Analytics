@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").directive('dashboardChart', function ($timeout) {
+﻿angular.module("umbraco").directive('dashboardChart', function () {
     return {
         restrict: 'EA',
         templateUrl: '/App_Plugins/Skybrud.Analytics/Views/Blocks/Chart.html',
@@ -17,7 +17,7 @@
                 if (history == null) return;
 
                 var canvas = $('<canvas width="' + (chart.width() - 150) + '" height="200"></canvas>').appendTo(chart);
-                
+
                 var ctx = canvas.get(0).getContext("2d");
 
                 var c = new Chart(ctx).Line(history.chart, {
@@ -42,38 +42,13 @@
 
             $scope.initialized = false;
             $scope.$watch(function () {
-	            return $element.is(":visible");
+                return $element.is(":visible");
             }, function (newValue) {
-	            if (!newValue) return;
-	            if ($scope.initialized) return;
-	            $scope.initialized = true;
-	            init();
+                if (!newValue) return;
+                if ($scope.initialized) return;
+                $scope.initialized = true;
+                init();
             });
-
-
-
-
-            //var t = setInterval(function() {
-
-            //    var w = chart.width();
-
-            //    if (w > 0) {
-            //        clearInterval(t);
-            //        console.log("clear t");
-            //        init($scope.vm.data ? $scope.vm.data.history : null);
-            //    }
-
-            //}, 100);
-
-            //window.hest = function() {
-
-
-            //    init($scope.vm.data ? $scope.vm.data.history : null);
-            //};
-
-            //chart[0].addEventListener("resize", function () {
-            //    console.log("heeeeeeeeeeeeeeeeeeeeeejsa");
-            //});
 
         }
     };
