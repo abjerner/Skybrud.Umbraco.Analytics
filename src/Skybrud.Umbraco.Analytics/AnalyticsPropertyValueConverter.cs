@@ -7,7 +7,7 @@ namespace Skybrud.Umbraco.Analytics {
 
     public class AnalyticsPropertyValueConverter : IPropertyValueConverter {
 
-        public bool IsConverter(PublishedPropertyType propertyType) {
+        public bool IsConverter(IPublishedPropertyType propertyType) {
             return propertyType.EditorAlias == "Skybrud.Umbraco.Analytics.Profile";
         }
 
@@ -16,20 +16,20 @@ namespace Skybrud.Umbraco.Analytics {
             return null;
         }
 
-        public Type GetPropertyValueType(PublishedPropertyType propertyType) {
+        public Type GetPropertyValueType(IPublishedPropertyType propertyType) {
             return typeof(AnalyticsProfileSelection);
         }
 
-        public PropertyCacheLevel GetPropertyCacheLevel(PublishedPropertyType propertyType) {
+        public PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) {
             // TODO: Return the correct cache level
             return PropertyCacheLevel.None;
         }
 
-        public object ConvertSourceToIntermediate(IPublishedElement owner, PublishedPropertyType propertyType, object source, bool preview) {
+        public object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object source, bool preview) {
             return source;
         }
 
-        public object ConvertIntermediateToObject(IPublishedElement owner, PublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview) {
+        public object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview) {
             try {
                 return AnalyticsProfileSelection.Deserialize(inter + "");
             } catch (Exception) {
@@ -37,7 +37,7 @@ namespace Skybrud.Umbraco.Analytics {
             }
         }
 
-        public object ConvertIntermediateToXPath(IPublishedElement owner, PublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview) {
+        public object ConvertIntermediateToXPath(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview) {
             return null;
         }
 
