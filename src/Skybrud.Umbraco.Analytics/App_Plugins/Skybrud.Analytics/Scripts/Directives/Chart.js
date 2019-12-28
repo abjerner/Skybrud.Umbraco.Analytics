@@ -1,8 +1,8 @@
-﻿angular.module("umbraco").directive('dashboardChart', ['$timeout', function ($timeout) {
+﻿angular.module("umbraco").directive('dashboardChart', function ($timeout) {
     return {
         restrict: 'EA',
         templateUrl: '/App_Plugins/Skybrud.Analytics/Views/Blocks/Chart.html',
-        controller: ['$scope', '$element', function ($scope, $element) {
+        controller: function ($scope, $element) {
 
             var chart = $(".sky-graph", $element).text("");
 
@@ -77,6 +77,6 @@
             //    console.log("heeeeeeeeeeeeeeeeeeeeeejsa");
             //});
 
-        }]
+        }
     };
-}]);
+});
