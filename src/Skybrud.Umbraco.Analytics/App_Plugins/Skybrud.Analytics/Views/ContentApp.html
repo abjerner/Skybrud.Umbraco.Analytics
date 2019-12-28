@@ -2,4 +2,5 @@
     <umb-empty-state position="center" ng-show="vm.state == 'create'">This page has not yet been created.</umb-empty-state>
     <umb-empty-state position="center" ng-show="vm.state == 'unpublished'">This page is currently not published.</umb-empty-state>
     <div ng-repeat="block in vm.blocks" ng-include="block.view"></div>
+    <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
 </div>

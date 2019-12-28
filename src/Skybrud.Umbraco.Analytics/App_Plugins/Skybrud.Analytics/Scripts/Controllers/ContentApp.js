@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Skybrud.Analytics.ContentApp", function ($scope, editorState, userService, $http) {
+﻿angular.module("umbraco").controller("Skybrud.Analytics.ContentApp", function ($scope, editorState, userService, $http, $element) {
 
     var vm = this;
 
@@ -37,10 +37,14 @@
 
     vm.blocks = null;
 
-    vm.getBlocks = function() {
+    vm.loading = false;
+    vm.getBlocks = function () {
+        vm.loading = true;
         $http.get("/umbraco/backoffice/Skybrud/Analytics/GetBlocks?pageId=" + editorState.current.id).then(function (res) {
+            vm.loading = false;
             vm.blocks = res.data.blocks;
-        }, function(res) {
+        }, function (res) {
+            vm.loading = false;
             console.error(res);
         });
     };
