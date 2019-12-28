@@ -77,11 +77,20 @@
 }
 
 .sky-analytics-history {
+    position: relative;
+
     .umb-box-content {
         position: relative;
         min-height: 150px;
+
         .umb-empty-state {
             max-width: initial;
+        }
+    }
+
+    &.loading {
+        .umb-box-content {
+            opacity: 0.5;
         }
     }
 }

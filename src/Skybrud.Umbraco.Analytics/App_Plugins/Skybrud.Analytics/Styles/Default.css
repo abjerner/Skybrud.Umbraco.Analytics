@@ -48,12 +48,18 @@
   width: 100%;
   height: 500px;
 }
+.sky-analytics-history {
+  position: relative;
+}
 .sky-analytics-history .umb-box-content {
   position: relative;
   min-height: 150px;
 }
 .sky-analytics-history .umb-box-content .umb-empty-state {
   max-width: initial;
+}
+.sky-analytics-history.loading .umb-box-content {
+  opacity: 0.5;
 }
 .sky-analytics-profile-selector dl {
   margin-top: 0;

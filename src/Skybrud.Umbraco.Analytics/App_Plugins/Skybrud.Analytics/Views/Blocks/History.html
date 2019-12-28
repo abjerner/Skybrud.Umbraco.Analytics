@@ -1,4 +1,4 @@
-﻿<div class="sky-analytics-history" ng-controller="Skybrud.Analytics.History as vm">
+﻿<div class="sky-analytics-history" ng-controller="Skybrud.Analytics.History as vm" ng-class="{loading: vm.loading}">
     <div class="umb-box">
         <div class="umb-box-header">
             <div class="umb-box-header-title">{{vm.block.title}}</div>
@@ -18,4 +18,5 @@
             <dashboard-chart ng-if="vm.data.history.chart" items="vm.data.history.items" />
         </div>
     </div>
+    <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
 </div>
