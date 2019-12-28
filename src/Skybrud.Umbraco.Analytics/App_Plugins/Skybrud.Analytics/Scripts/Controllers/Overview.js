@@ -32,7 +32,9 @@
         overlayService.open({
             view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/DeleteClient.html",
             client: client,
+            title: "Delete credentials?",
             submitButtonLabel: "Confirm",
+            submitButtonStyle: "danger",
             closeButtonLabel: "Cancel",
             submit: function () {
                 analyticsService.deleteClient(client).then(function () {
@@ -161,6 +163,8 @@
         overlayService.open({
             view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/DeleteUser.html",
             user: user,
+            submitButtonLabel: "Confirm",
+            submitButtonStyle: "danger",
             submit: function () {
                 analyticsService.deleteUser(user).then(function () {
                     notificationsService.success("Skybrud.Analytics", "The user was successfully deleted.");
