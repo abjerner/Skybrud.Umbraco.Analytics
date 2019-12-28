@@ -40,16 +40,14 @@
                 init();
             });
 
-
-            // Hack: Listen for tab changes so we can lazy load the property editor
-            angular.element(document.querySelectorAll(".umb-sub-views-nav-item[data-element='sub-view-skybrud-analytics']")).bind("click", function () {
-
-                $timeout(function () {
-                    if ($element.is(':visible')) {
-                        init();
-                    }
-                }, 20);
-
+            $scope.initialized = false;
+            $scope.$watch(function () {
+	            return $element.is(":visible");
+            }, function (newValue) {
+	            if (!newValue) return;
+	            if ($scope.initialized) return;
+	            $scope.initialized = true;
+	            init();
             });
 
 
