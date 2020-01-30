@@ -1,0 +1,37 @@
+{
+  "tasks": {
+    "postBuild": [
+      {
+        "alias": "zip",
+        "destination": "releases/github/{packageName}.v{version}.zip",
+        "files": [
+          {
+            "source": "src/{packageName}/bin/Release/net472/",
+            "destination": "bin/",
+            "patterns": [
+              "{packageName}.dll",
+              "{packageName}.xml",
+              "Skybrud.Essentials.dll",
+              "Skybrud.Essentials.xml",
+              "Skybrud.Social.Google.dll",
+              "Skybrud.Social.Google.xml",
+              "Skybrud.Social.Google.Analytics.dll",
+              "Skybrud.Social.Google.Analytics.xml"
+            ]
+          },
+          {
+            "source": "src/{packageName}/App_Plugins/Skybrud.Analytics",
+            "destination": "App_Plugins/Skybrud.Analytics/",
+            "patterns": [
+              "**/*.js",
+              "**/*.css",
+              "**/*.html",
+              "**/*.xml",
+              "package.manifest"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
