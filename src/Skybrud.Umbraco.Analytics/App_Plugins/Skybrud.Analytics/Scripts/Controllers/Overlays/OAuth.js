@@ -26,6 +26,6 @@
             $scope.mode = "authenticated";
             $scope.model.disableSubmitButton = user === null;
         });
-    }
+    };
 
 });

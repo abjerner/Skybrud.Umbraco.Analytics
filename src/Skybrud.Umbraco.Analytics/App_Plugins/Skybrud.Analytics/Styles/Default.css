@@ -35,6 +35,9 @@
 .sky-analytics .sky-chart.loading .sky-graph {
   opacity: 0.5;
 }
+.sky-analytics .-red {
+  color: #F02E28;
+}
 .skybrud-analytics .table.table-bordered.table-condensed {
   margin: 0;
 }

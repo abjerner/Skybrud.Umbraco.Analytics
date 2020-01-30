@@ -1,52 +1,64 @@
 ﻿<div ng-controller="Skybrud.Analytics.OAuthOverlay">
-
-    <div ng-show="mode == 'select'">
-        <div class="umb-box">
-            <div class="umb-box-header">
-                <div class="umb-box-header-title">
-                    Select OAuth client
+    <umb-editor-view>
+        <umb-editor-header name="model.title" hide-icon="true" hide-description="true" hide-alias="true" name-locked="true"></umb-editor-header>
+        <umb-editor-container>
+            <div ng-show="mode == 'select'">
+                <div class="umb-box">
+                    <div class="umb-box-header">
+                        <div class="umb-box-header-title">
+                            Select OAuth client
+                        </div>
+                    </div>
+                    <div class="umb-box-content">
+                        <p ng-repeat="client in clients">
+                            <a href="#" prevent-default ng-click="selectClient(client)">{{client.name}}</a>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="umb-box-content">
-                <p ng-repeat="client in clients">
-                    <a href="#" prevent-default ng-click="selectClient(client)">{{client.name}}</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div ng-show="mode == 'authenticate'">
-        <h4>Authentication</h4>
-        <p>You have authenticated with the following user. Do you wish to continue?</p>
-        <pre>{{user | json}}</pre>
-    </div>
-
-    <div ng-show="mode == 'authenticated'">
-        <div class="umb-box">
-            <div class="umb-box-header">
-                <div class="umb-box-header-title">Authentication</div>
-            </div>
-            <div class="umb-box-content">
+            <div ng-show="mode == 'authenticate'">
+                <h4>Authentication</h4>
                 <p>You have authenticated with the following user. Do you wish to continue?</p>
+                <pre>{{user | json}}</pre>
+            </div>
+            <div ng-show="mode == 'authenticated'">
                 <div class="umb-box">
+                    <div class="umb-box-header">
+                        <div class="umb-box-header-title">Authentication</div>
+                    </div>
                     <div class="umb-box-content">
-                        <div class="history-item ng-scope">
-                            <div class="history-item__break">
-                                <div class="history-item__avatar">
-                                    <div color="secondary" name="{{model.user.name}}">
-                                        <img class="umb-avatar umb-avatar--s" ng-src="{{model.user.avatar}}"/>
+                        <p>You have authenticated with the following user. Do you wish to continue?</p>
+                        <div class="umb-box">
+                            <div class="umb-box-content">
+                                <div class="history-item ng-scope">
+                                    <div class="history-item__break">
+                                        <div class="history-item__avatar">
+                                            <div color="secondary" name="{{model.user.name}}">
+                                                <img class="umb-avatar umb-avatar--s" ng-src="{{model.user.avatar}}"/>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>{{model.user.name}}</div>
+                                            <div class="history-item__date">{{model.user.email}}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <div>{{model.user.name}}</div>
-                                    <div class="history-item__date">{{model.user.email}}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
+        </umb-editor-container>
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button ng-if="model.infiniteMode" action="close()" button-style="link" label="{{model.closeButtonLabel || 'Close'}}" type="button"></umb-button>
+                <umb-button
+                    type="button"
+                    action="model.submit(model)"
+                    label="{{model.submitButtonLabel || Add}}"
+                    state="model.submitButtonState"
+                    button-style="success"></umb-button>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+    </umb-editor-view>
 </div>

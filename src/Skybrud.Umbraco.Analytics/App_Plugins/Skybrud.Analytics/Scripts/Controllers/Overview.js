@@ -9,7 +9,7 @@
             name: "Overview",
             icon: "icon-chart-curve",
             view: "/App_Plugins/path/to/html.html",
-            active: true            
+            active: true
         },
         {
             alias: "settings",
@@ -49,9 +49,10 @@
             }
         });
     };
-    
+
     $scope.addClient = function () {
-        editorService.open({
+
+        var o = {
             view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/Properties.html",
             title: "Add OAuth client",
             size: "small",
@@ -84,6 +85,7 @@
                 }
             ],
             submit: function (model) {
+                o.submitButtonState = "busy";
                 const client = propertiesToObject(model.properties);
                 $scope.overlay.submitButtonState = "busy";
                 analyticsService.addClient(client).then(function () {
@@ -95,15 +97,19 @@
             close: function () {
                 editorService.close();
             }
-        });
+        };
+
+        editorService.open(o);
     };
 
     $scope.editClient = function (client) {
-        $scope.overlay = {
-            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/PropertiesOld.html",
+
+        var o = {
+            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/Properties.html",
             title: "Edit OAuth client",
+            size: "small",
             submitButtonLabel: "Save",
-            show: true,
+            closeButtonLabel: "Close",
             properties: [
                 {
                     alias: "id",
@@ -140,20 +146,24 @@
                 }
             ],
             submit: function (model) {
+                o.submitButtonState = "busy";
                 const client = propertiesToObject(model.properties);
-                $scope.overlay.submitButtonState = "busy";
                 analyticsService.saveClient(client).then(function () {
                     notificationsService.success("Skybrud.Analytics", "The OAuth client was successfully updated.");
                     $scope.updateClients();
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
+                    editorService.close();
                 });
+            },
+            close: function () {
+                editorService.close();
             }
         };
 
+        editorService.open(o);
+
     };
 
-    $scope.updateClients = function() {
+    $scope.updateClients = function () {
         analyticsService.getClients().then(function (res) {
             $scope.clients = res.data;
         });
@@ -179,22 +189,28 @@
     };
 
     $scope.addUser = function () {
-        $scope.overlay = {
-            view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/OAuth.html",
-            title: "Authenticate with Google and Analytics",
-            submitButtonLabel: "Continue",
-            disableSubmitButton: true,
-            show: true,
+
+        var o = {
+	        view: "/App_Plugins/Skybrud.Analytics/Views/Overlays/OAuth.html",
+            size: "small",
+	        title: "Authenticate with Google and Analytics",
+	        submitButtonLabel: "Continue",
+            closeButtonLabel: "Close",
             submit: function (model) {
-                $scope.overlay.state = "busy";
+                o.submitButtonState = "busy";
                 analyticsService.addUser(model.client, model.user).then(function (res) {
-                    notificationsService.success("Skybrud.Analytics", "The user was successfully added.");
+	                notificationsService.success("Skybrud.Analytics", "The user was successfully added.");
                     $scope.updateUsers();
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
+                    editorService.close();
                 });
+            },
+            close: function () {
+                editorService.close();
             }
         };
+
+        editorService.open(o);
+
     };
 
     $scope.updateUsers = function () {

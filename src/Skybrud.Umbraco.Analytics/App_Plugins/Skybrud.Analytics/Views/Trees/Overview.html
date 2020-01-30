@@ -1,4 +1,4 @@
-﻿<div class="umb-pane" ng-controller="Skybrud.Analytics.Overview">
+﻿<div class="umb-pane sky-analytics" ng-controller="Skybrud.Analytics.Overview">
     <umb-editor-view>
 
         <umb-editor-header name="'Skybrud.Analytics'" name-locked="true" hide-icon="true" hide-alias="true" hide-description="true"></umb-editor-header>
@@ -34,7 +34,7 @@
                                 <td><code>{{client.clientId}}</code></td>
                                 <td style="text-align: right; width: 1px; white-space: nowrap;">
                                     <a href="#" prevent-default ng-click="editClient(client)">Edit</a>
-                                    <a href="#" prevent-default ng-click="deleteClient(client)">Delete</a>
+                                    <a href="#" class="-red" prevent-default ng-click="deleteClient(client)">Delete</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -76,7 +76,7 @@
                                 <td>{{user.name}}</td>
                                 <td>{{user.email}}</td>
                                 <td style="text-align: right;">
-                                    <a href="#" prevent-default ng-click="deleteUser(user)">Delete</a>
+                                    <a href="#" class="-red" prevent-default ng-click="deleteUser(user)">Delete</a>
                                 </td>
                             </tr>
                             </tbody>
