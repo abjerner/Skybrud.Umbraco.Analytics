@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Skybrud.Essentials.Time;
 using Skybrud.Umbraco.Analytics.Models.Config;
 
 namespace Skybrud.Umbraco.Analytics.Models.Api {
@@ -17,6 +18,12 @@ namespace Skybrud.Umbraco.Analytics.Models.Api {
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("authenticatedAt")]
+        public EssentialsTime AuthenticatedAt { get; set; }
+
+        [JsonProperty("authenticatedAtAgo")]
+        public string AuthenticatedAtAgo { get; set; }
+
         public UserModel() { }
 
         public UserModel(AnalyticsConfigUser user) {
@@ -24,6 +31,16 @@ namespace Skybrud.Umbraco.Analytics.Models.Api {
             UserId = user.UserId;
             Email = user.Email;
             Name = user.Name;
+            AuthenticatedAt = user.AuthenticatedAt;
+
+            if (AuthenticatedAt.IsToday) {
+                AuthenticatedAtAgo = "today";
+            } else if (AuthenticatedAt.AddDays(1).IsToday) {
+                AuthenticatedAtAgo = "yesterday";
+            } else {
+                AuthenticatedAtAgo = $"{EssentialsTime.Now.Subtract(AuthenticatedAt).TotalDays:N0} days ago";
+            }
+
         }
 
     }

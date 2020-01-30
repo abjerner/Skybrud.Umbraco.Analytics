@@ -24,6 +24,9 @@ namespace Skybrud.Umbraco.Analytics.Models.Api {
             [JsonProperty("refreshToken")]
             public string RefreshToken { get; set; }
 
+            [JsonProperty("authenticatedAt")]
+            public string AuthenticatedAt { get; set; }
+
         }
 
     }

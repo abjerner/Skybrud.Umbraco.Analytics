@@ -5,6 +5,7 @@ using System.Web.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json;
+using Skybrud.Essentials.Time;
 using Skybrud.Umbraco.Analytics.Models.Api;
 using Umbraco.Core.IO;
 using Umbraco.Core.Models.Membership;
@@ -159,7 +160,8 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
                 UserId = userModel.Id,
                 Name = userModel.Name,
                 Email = userModel.Email,
-                RefreshToken = userModel.RefreshToken
+                RefreshToken = userModel.RefreshToken,
+                AuthenticatedAt = EssentialsTime.Parse(userModel.AuthenticatedAt)
             };
 
             client.Users.Add(u);

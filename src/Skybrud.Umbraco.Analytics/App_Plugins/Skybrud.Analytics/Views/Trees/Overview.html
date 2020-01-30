@@ -65,6 +65,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Authenticated&nbsp;at</th>
                                 <th>&nbsp;</th>
                             </tr>
                             </thead>
@@ -75,6 +76,10 @@
                                 </td>
                                 <td>{{user.name}}</td>
                                 <td>{{user.email}}</td>
+                                <td>
+                                    {{user.authenticatedAt | date: 'yyyy-MM-dd HH:mm'}}
+                                    <small>({{user.authenticatedAtAgo}})</small>
+                                </td>
                                 <td style="text-align: right;">
                                     <a href="#" class="-red" prevent-default ng-click="deleteUser(user)">Delete</a>
                                 </td>

@@ -2,10 +2,10 @@
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
+using Skybrud.Essentials.Time;
 using Skybrud.Social.Google;
 using Skybrud.Social.Google.Analytics.Scopes;
 using Skybrud.Social.Google.Models;
-using Skybrud.Social.Google.Models.Authentication;
 using Skybrud.Social.Google.OAuth;
 using Skybrud.Social.Google.Options.Authentication;
 using Skybrud.Social.Google.Responses;
@@ -143,7 +143,8 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Surface {
                     avatar = user.Picture,
                     clientId = client.ClientId,
                     clientSecret = client.ClientSecret,
-                    refreshToken = info.Body.RefreshToken
+                    refreshToken = info.Body.RefreshToken,
+                    authenticatedAt = EssentialsTime.UtcNow
                 };
 
                 return View("~/App_Plugins/Skybrud.Analytics/Razor/AuthenticateSuccess.cshtml", new AnalyticsAuthenticatedPageModel {

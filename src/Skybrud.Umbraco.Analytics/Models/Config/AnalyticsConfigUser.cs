@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Time;
 
 namespace Skybrud.Umbraco.Analytics.Models.Config {
 
@@ -24,6 +25,9 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
         [JsonProperty("refreshToken")]
         public string RefreshToken { get; set; }
 
+        [JsonProperty("authenticatedAt")]
+        public EssentialsTime AuthenticatedAt { get; set; }
+
         public  AnalyticsConfigUser() { }
 
         private AnalyticsConfigUser(AnalyticsConfigClient client, JObject obj) {
@@ -33,6 +37,7 @@ namespace Skybrud.Umbraco.Analytics.Models.Config {
             Email = obj.GetString("email");
             Name = obj.GetString("name");
             RefreshToken = obj.GetString("refreshToken");
+            AuthenticatedAt = obj.GetString("authenticatedAt", EssentialsTime.Parse);
         }
 
         public static AnalyticsConfigUser Parse(AnalyticsConfigClient client, JObject obj) {
