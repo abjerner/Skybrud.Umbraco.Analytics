@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0-beta002</Version>
+    <Version>1.0.0-beta003</Version>
     <Authors>Anders Bjerner</Authors>
     <Description>Umbraco 8 content app for showing Analytics data.</Description>
-    <Copyright>Copyright © 2019</Copyright>
+    <Copyright>Copyright © 2020</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -58,5 +58,9 @@
       <DependentUpon>GoogleOAuth.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release' AND '$(BuildTools)'=='1'">
+    <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
+  </Target>
 
 </Project>
