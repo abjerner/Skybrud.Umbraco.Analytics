@@ -21,12 +21,12 @@
 
   <ItemGroup>
     <None Include="App_Plugins\Skybrud.Analytics\Styles\Default.less" />
-    <None Include="App_Plugins\Skybrud.Analytics\Styles\Default.css">
+    <Content Include="App_Plugins\Skybrud.Analytics\Styles\Default.css">
       <DependentUpon>Default.less</DependentUpon>
-    </None>
-    <Content Include="App_Plugins\Skybrud.Analytics\Styles\Default.min.css">
-      <DependentUpon>Default.css</DependentUpon>
     </Content>
+    <None Include="App_Plugins\Skybrud.Analytics\Styles\Default.min.css">
+      <DependentUpon>Default.css</DependentUpon>
+    </None>
   </ItemGroup>
   
   <ItemGroup>
