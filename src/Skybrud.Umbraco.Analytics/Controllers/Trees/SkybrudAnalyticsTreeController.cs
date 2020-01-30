@@ -28,6 +28,7 @@ namespace Skybrud.Umbraco.Analytics.Controllers.Trees {
         protected override TreeNodeCollection GetTreeNodes(string id, FormDataCollection queryStrings) {
 
             TreeNodeCollection nodes = new TreeNodeCollection();
+            return nodes;
 
             if (id == "-1") {
                 TreeNode node = CreateTreeNode("oauth", "-1", queryStrings, "OAuth", "icon-settings", AnalyticsConfig.Current.GetClients().Any());
