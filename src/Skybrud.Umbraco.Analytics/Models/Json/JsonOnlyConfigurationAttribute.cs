@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http.Controllers;
-using Umbraco.Web.WebApi;
 
 namespace Skybrud.Umbraco.Analytics.Models.Json {
 
