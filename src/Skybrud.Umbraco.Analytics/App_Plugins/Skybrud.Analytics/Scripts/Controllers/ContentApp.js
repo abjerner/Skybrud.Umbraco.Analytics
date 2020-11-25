@@ -9,7 +9,7 @@
 
     if (editorState.current.variants.length === 1) {
 
-        var state = editorState.current.variants[0].state;
+        const state = editorState.current.variants[0].state;
 
         switch (state) {
 
@@ -23,13 +23,13 @@
                 break;
 
             default:
-                alert("Unknown state: " + state);
+                console.error(`Skybrud.Umbraco.Analytics: Unknown state: ${state}`);
                 break;
 
         }
 
     } else {
-        alert("MULTIPLE VARIANTS. FANCY!!!");
+        console.error("Skybrud.Umbraco.Analytics: Multiple variants are not fully supported!");
     }
 
     vm.CurrentNodeId = editorState.current.id;
