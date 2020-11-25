@@ -39,7 +39,7 @@
 
   <ItemGroup>
     <Reference Include="System.Web" />
-    <PackageReference Include="Skybrud.Essentials" Version="1.1.19" />
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.25" />
     <PackageReference Include="Skybrud.Social.Google.Analytics" Version="1.0.0-beta001" />
     <PackageReference Include="UmbracoCms.Core" Version="8.1.0">
       <PrivateAssets>all</PrivateAssets>
