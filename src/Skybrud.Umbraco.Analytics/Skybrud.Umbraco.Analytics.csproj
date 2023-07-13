@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
@@ -41,7 +41,7 @@
     <Reference Include="System.Web" />
     <PackageReference Include="Skybrud.Essentials" Version="1.1.25" />
     <PackageReference Include="Skybrud.Social.Google.Analytics" Version="1.0.0-beta001" />
-    <PackageReference Include="UmbracoCms.Core" Version="8.1.0">
+    <PackageReference Include="UmbracoCms.Core" Version="8.5.4">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="UmbracoCms.Web" Version="8.1.0">
